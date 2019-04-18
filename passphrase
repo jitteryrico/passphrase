@@ -1,0 +1,84 @@
+import random
+import tkinter
+from tkinter import *
+list  = []
+words = []
+passwords = []
+a = Tk()
+a.geometry("800x300")
+a.title("passphrase generator")
+
+
+
+#Start function
+def start():
+    global words
+    # Opens the file with all the words
+    txt = open("words_alpha.txt", "r")
+    text = txt.read()
+    # Turns all the words into an array
+    words = text.split()
+    # Capitalizes the first letter of each word in the entire list
+    for idx in range(len(words)):
+        string = str(words[idx])
+        string = string.capitalize()
+        words[idx] = string
+
+
+# Password creation function
+def create():
+    global list
+    global words
+    list = []
+    enter = entry.get()
+    try:
+        enter = int(enter)
+    except:
+        print("try again nerd")
+    # Chooses random words from array
+    for i in range(enter):
+        list.append(random.choice(words))
+    # Turns list of randomly chosen words into string
+    passphrase = "".join(list)
+    label.config(text = passphrase)
+
+def shuffle():
+    global list
+    random.shuffle(list)
+    passphrase = "".join(list)
+    label.config(text = passphrase)
+
+def store():
+    global list
+    global passwords
+    passphrase = "".join(list)
+    passwords.append(str(passphrase))
+    p = ', '.join(passwords)
+    label4.config(text = p)
+
+def clear():
+    global passwords
+    passwords = []
+    label4.config(text = passwords)
+
+label2 = Label(a, text="Your password below")
+label2.place(x= 10, y = 50)
+label = Label(a, text="")
+label.place(x = 10, y = 100)
+entry = Entry(a)
+entry.place(x = 10, y = 150)
+label3 = Label(a, text = "Input how many words you want above")
+label3.place(x= 10, y = 175)
+label4 = Label(a, text = "", wraplength = 400)
+label4.place(x = 400, y = 100)
+button = Button(a, text="generate passphrase", command = create)
+button.place(x = 10, y = 200)
+button2 = Button(a, text="rearrange words", command = shuffle)
+button2.place(x = 150, y = 200)
+button3 = Button(a, text="store password", command = store)
+button3.place(x = 10, y = 225)
+button4 = Button(a, text="clear list", command = clear)
+button4.place(x = 150, y =225)
+
+start()
+a.mainloop()
